@@ -31,7 +31,12 @@ tableReader.config(['$stateProvider', '$locationProvider', function ($stateProvi
   $stateProvider.state('home', {
     url: '/home',
     controller: 'Home.controller',
-    templateUrl: '/templates/home.html'
+    templateUrl: '/templates/home.html',
+    resolve: {
+      "currentAuth": ['Auth', function (Auth) {
+        return Auth.$requireAuth();
+      }]
+    }
   });
 
   $stateProvider.state('upload', {
@@ -80,86 +85,36 @@ tableReader.controller('Login.controller', ['$scope', 'FIREBASE_URL', '$firebase
 
 }]);
 
-tableReader.controller('Upload.controller', ['$scope', 'FIREBASE_URL', '$firebaseArray', 'currentAuth', function ($scope, FIREBASE_URL, $firebaseArray, currentAuth) {
+tableReader.controller('Home.controller', ['$scope', 'FIREBASE_URL', '$firebaseArray', 'currentAuth', function ($scope, FIREBASE_URL, $firebaseArray, currentAuth, Auth) {
+
+  var ref = new Firebase(FIREBASE_URL);
+
+  $scope.jobs = $firebaseArray(ref);
+
+  $scope.addJob = function() {
+    var name = $scope.job;
+    $scope.jobs.$add({
+      name: $scope.job,
+      condition: "active",
+      created_at: Firebase.ServerValue.TIMESTAMP,
+      priority: -1
+      });
+
+    $scope.job = "";
+  };
+
+}]);
+
+tableReader.controller('Upload.controller', ['$scope', 'FIREBASE_URL', '$firebaseArray', 'currentAuth', 'Auth', function ($scope, FIREBASE_URL, $firebaseArray, currentAuth, Auth) {
 
   var ref = new Firebase(FIREBASE_URL); 
   
   $scope.files = $firebaseArray(ref);
 
   $scope.uploadCSV= function() {
-    console.log($scope.file);
+    console.log($scope.results);
  
   }
 
   
 }]);
-
-tableReader.directive('csvReader', [function () {
-
-  var convertToJSON = function(content) {
-
-    var lines = content.csv.split('\n'),
-      headers = lines[0].split(content.separator),
-      columnCount = lines[0].split(content.separator).length,
-      results = [];
-
-    for (var i = 1; i < lines.length; i++) {
-
-      var obj = {};
-
-      var line = lines[i].split(new RegExp(content.separator + '(?![^"]*"(?:(?:[^"]*"){2})*[^"]*$)'));
-
-      for (var j = 0; j < headers.length; j++) {
-
-        obj[headers[j]] = line[j];
-      }
-
-      results.push(obj);
-    }
-
-    return results;
-  };
-
-  return {
-    restrict: 'A',
-    scope: {
-      results: '=ngModel',
-      separator: '=',
-      callback: '&saveResultsCallback'
-    },
-    link: function (scope, element, attrs) {
-
-      var data = {
-        csv: null,
-        separator: scope.separator || ','
-      };
-
-      element.on('change', function (e) {
-
-        var files = e.target.files;
-
-        if (files && files.lenght) {
-
-          var reader = new FileReader();
-          var file = (e.srcElement || e.target).files[0];
-
-          reader.onload = function(e) {
-
-            var contents = e.target.result;
-
-            data.csv = contents;
-
-            scope.$apply(function () {
-
-              scope.results = convertToJSON(data);
-
-              scope.callback(scope.result);
-            });
-          };
-
-          reader.readAsText(file);
-        }
-      });
-    }
-  };
-}])
