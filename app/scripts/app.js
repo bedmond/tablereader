@@ -85,23 +85,33 @@ tableReader.controller('Login.controller', ['$scope', 'FIREBASE_URL', '$firebase
 
 }]);
 
-tableReader.controller('Home.controller', ['$scope', 'FIREBASE_URL', '$firebaseArray', 'currentAuth', function ($scope, FIREBASE_URL, $firebaseArray, currentAuth, Auth) {
+tableReader.controller('Home.controller', ['$scope', '$http', 'FIREBASE_URL', '$firebaseArray', 'currentAuth', function ($scope, $http, FIREBASE_URL, $firebaseArray, currentAuth, Auth) {
 
-  var ref = new Firebase(FIREBASE_URL);
+  $scope.readCSV = function() {
+      // http get request to read CSV file content
+      $http.get('/assets/files/testCopy.csv').success($scope.processData);
+    };
 
-  $scope.jobs = $firebaseArray(ref);
+    $scope.processData = function(allText) {
+      // split content based on new line
+      var allTextLines = allText.split(/\r\n|\n/);
+      var headers = allTextLines[0].split(',');
+      var lines = [];
 
-  $scope.addJob = function() {
-    var name = $scope.job;
-    $scope.jobs.$add({
-      name: $scope.job,
-      condition: "active",
-      created_at: Firebase.ServerValue.TIMESTAMP,
-      priority: -1
-      });
-
-    $scope.job = "";
-  };
+      for ( var i = 0; i < allTextLines.length; i++) {
+        // split content based on comma
+        var data = allTextLines[i].split(',');
+        if (data.length == headers.length) {
+          var tarr = [];
+          for ( var j = 0; j < headers.length; j++) {
+            tarr.push(data[j]);
+          }
+          lines.push(tarr);
+        }
+      }
+      $scope.data = lines;
+    };
+  
 
 }]);
 

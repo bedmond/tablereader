@@ -7,13 +7,12 @@
         <div class="form-group">
           <input ng-model="job" id="jobInput" class="form-control" type="text" placeholder="Enter new job..."></input>
         </div>
-        <button class="btn btn-info pull-right" ng-click="addJob()">Add Job</button>
+        <button class="btn btn-info pull-right" ng-click="readCSV()">Add Job</button>
         <table class="table table-bordered">
         <br/>
         <br/>
-          <tr ng-repeat="job in jobs | orderBy: 'priority'" ng-show="job.condition == 'active'">
-            <br/>
-            <td>{{ job.name }}</td>
+          <tr ng-repeat="x in data">
+            <td ng-repeat="y in x track by $index">{{ y }}</td>
           </tr>
         </table>
     </div>
