@@ -1,0 +1,66 @@
+.navbar {
+  float: left;
+  margin-left: 1em;
+}
+.navbar-left {
+  float: left;
+}
+
+.form-group-upload-file{
+  float: left;
+  margin-left: 1em;
+}
+
+.search-return {
+  padding-left: 250px;
+}
+
+.table {
+  margin-top: 30px;
+  margin-left: 1em;
+  float: left;
+}
+
+
+.form-group-upload-file {
+  float: left;
+  margin-left: 1em;
+}
+
+.info-form {
+  margin-left: 1em;
+  position: absolute;
+  margin-top: 100px;
+}
+
+.btn-group-login {
+  margin-top: 20px;
+  margin-left: 1em;
+}
+
+.btn-group-display {
+  margin-left: 1em;
+}
+
+  .btn-info {
+    margin-right: 5px;
+}
+
+.container-message {
+  margin-top: 80px;
+  margin-left: 2em;
+}
+
+.email {
+  margin-top: 20px;
+  margin-left: 1em;
+}
+
+.password {
+  margin-left: 1em;
+}
+
+.upload-file {
+  margin-top: 80px;
+  margin-left: 1em;
+}

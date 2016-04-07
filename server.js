@@ -5,8 +5,8 @@ var Hapi = require('hapi'),
     routes = {
         css: {
             method: 'GET',
-            path: '/css/{path*}',
-            handler: createDirectoryRoute('css')
+            path: '/styles/{path*}',
+            handler: createDirectoryRoute('styles')
         },
         js: {
             method: 'GET',

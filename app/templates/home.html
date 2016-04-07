@@ -7,14 +7,22 @@
         <div class="form-group">
           <input ng-model="job" id="jobInput" class="form-control" type="text" placeholder="Enter new job..."></input>
         </div>
-        <button class="btn btn-info pull-right" ng-click="readCSV()">Add Job</button>
-        <table class="table table-bordered">
-        <br/>
-        <br/>
-          <tr ng-repeat="x in data">
-            <td ng-repeat="y in x track by $index">{{ y }}</td>
-          </tr>
-        </table>
+        <div class="btn-group-display">
+          <button class="btn btn-info pull-right" ng-click="readCSV()">Display table</button>
+          <button class="btn btn-info pull-right" ng-click="addJob()">Add job</button>
+          <div class="row">
+
+              <table class="col-md-1 table table-bordered">
+              <br/>
+              <br/>
+                <tr ng-repeat="x in data">
+                  <td ng-repeat="y in x track by $index">{{ y }}</td>
+                </tr>
+              </table>
+            
+          </div>
+        </div>
+      </div> 
     </div>
   </div>
 </div>

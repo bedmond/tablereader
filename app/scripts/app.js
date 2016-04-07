@@ -94,7 +94,7 @@ tableReader.controller('Home.controller', ['$scope', '$http', 'FIREBASE_URL', '$
 
     $scope.processData = function(allText) {
       // split content based on new line
-      var allTextLines = allText.split(/\r\n|\n/);
+      var allTextLines = allText.split(/[\r\n|\n]+/);
       var headers = allTextLines[0].split(',');
       var lines = [];
 
